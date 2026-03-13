@@ -1,0 +1,39 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+.env
+
+# Checkpoints and model outputs
+checkpoints/
+mlx_model/
+*.pt
+*.pth
+*.ckpt
+
+# Data
+*.zarr/
+*.npz
+*.nc
+*.grib
+*.grib2
+
+# Benchmark results
+/tmp/weatheralpha_bench_result.json
+eval_results.json
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
