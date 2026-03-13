@@ -1,0 +1,93 @@
+{
+  "KORD": {
+    "meteostat_id": "72530",
+    "lat": 41.98,
+    "lon": -87.90,
+    "elevation_m": 204,
+    "cluster": "great_lakes",
+    "name": "Chicago O'Hare International Airport",
+    "polymarket_relevant": true
+  },
+  "KDFW": {
+    "meteostat_id": "72259",
+    "lat": 32.90,
+    "lon": -97.02,
+    "elevation_m": 182,
+    "cluster": "southern_plains",
+    "name": "Dallas/Fort Worth International Airport",
+    "polymarket_relevant": true
+  },
+  "KMIA": {
+    "meteostat_id": "72202",
+    "lat": 25.76,
+    "lon": -80.44,
+    "elevation_m": 4,
+    "cluster": "subtropical",
+    "name": "Miami International Airport",
+    "polymarket_relevant": true
+  },
+  "KSEA": {
+    "meteostat_id": "72793",
+    "lat": 47.44,
+    "lon": -122.31,
+    "elevation_m": 136,
+    "cluster": "pacific_coast",
+    "name": "Seattle-Tacoma International Airport",
+    "polymarket_relevant": true
+  },
+  "KMDW": {
+    "meteostat_id": "72534",
+    "lat": 41.79,
+    "lon": -87.75,
+    "elevation_m": 188,
+    "cluster": "great_lakes",
+    "name": "Chicago Midway International Airport",
+    "polymarket_relevant": true
+  },
+  "KDAL": {
+    "meteostat_id": "72261",
+    "lat": 32.85,
+    "lon": -96.85,
+    "elevation_m": 145,
+    "cluster": "southern_plains",
+    "name": "Dallas Love Field",
+    "polymarket_relevant": true
+  },
+  "KCHICAGO": {
+    "meteostat_id": "72530",
+    "lat": 41.98,
+    "lon": -87.90,
+    "elevation_m": 204,
+    "cluster": "great_lakes",
+    "name": "Chicago (composite)",
+    "polymarket_relevant": true,
+    "_note": "Alias for KORD; same meteostat_id"
+  },
+  "KJFK": {
+    "meteostat_id": "74486",
+    "lat": 40.63,
+    "lon": -73.78,
+    "elevation_m": 4,
+    "cluster": "northeast",
+    "name": "John F. Kennedy International Airport",
+    "polymarket_relevant": false
+  },
+  "KLAX": {
+    "meteostat_id": "72295",
+    "lat": 33.94,
+    "lon": -118.41,
+    "elevation_m": 30,
+    "cluster": "pacific_coast",
+    "name": "Los Angeles International Airport",
+    "polymarket_relevant": false
+  },
+  "KATL": {
+    "meteostat_id": "72219",
+    "lat": 33.64,
+    "lon": -84.43,
+    "elevation_m": 315,
+    "cluster": "continental",
+    "name": "Hartsfield-Jackson Atlanta International Airport",
+    "polymarket_relevant": false
+  }
+}

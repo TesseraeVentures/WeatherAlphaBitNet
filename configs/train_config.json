@@ -1,0 +1,24 @@
+{
+  "batch_size": 32,
+  "epochs": 100,
+  "lr": 1e-3,
+  "weight_decay": 1e-4,
+  "context_hours": 72,
+  "lead_hours": 120,
+  "step_hours": 6,
+  "aux_loss_coef": 0.01,
+  "rl_loss_coef": 0.001,
+  "grad_clip": 1.0,
+  "warmup_epochs": 5,
+  "scheduler": "cosine",
+  "checkpoint_every": 10,
+  "eval_every": 5,
+  "num_workers": 4,
+  "pin_memory": true,
+  "_notes": {
+    "lr": "1e-3 works well for BitNet — STE gradients are noisier than fp32",
+    "aux_loss_coef": "0.01 balances expert load without dominating main loss",
+    "context_hours": "72h = 12 ERA5 steps at 6h cadence; enough for synoptic pattern",
+    "lead_hours": "120h = 5-day forecast; matches FengWu/Pangu benchmark range"
+  }
+}

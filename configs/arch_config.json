@@ -1,0 +1,13 @@
+{
+  "d_model": 256,
+  "n_heads": 8,
+  "n_layers": 6,
+  "n_shared_experts": 2,
+  "n_private_experts": 8,
+  "n_active_private": 2,
+  "patch_size_hours": 6,
+  "rollout_type": "fixed",
+  "bitnet_mode": "b1.58",
+  "dropout": 0.1,
+  "max_lead_time_hours": 120
+}
