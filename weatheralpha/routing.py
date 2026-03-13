@@ -115,7 +115,11 @@ class SharedPrivateRouter(nn.Module):
         # Encourages uniform expert utilisation.
         # Loss = n_private * sum(f_i * P_i) where f_i = fraction of tokens to expert i
         # and P_i = mean router probability for expert i.
-        token_counts = (topk_idx.view(B * T, self.n_active) == torch.arange(self.n_private, device=x.device).unsqueeze(0)).float().sum(0)
+        # topk_idx: (B, T, n_active) → count how many tokens routed to each expert
+        expert_range = torch.arange(self.n_private, device=x.device)  # (n_private,)
+        # Compare (B*T, n_active, 1) vs (1, 1, n_private) → (B*T, n_active, n_private)
+        topk_flat = topk_idx.view(B * T, self.n_active, 1)
+        token_counts = (topk_flat == expert_range.view(1, 1, self.n_private)).float().sum(dim=(0, 1))
         f = token_counts / (B * T)  # fraction of tokens → each expert
         p = router_probs.view(B * T, self.n_private).mean(0)  # mean routing prob
         self.aux_loss = self.load_balance_coef * self.n_private * (f * p).sum()
