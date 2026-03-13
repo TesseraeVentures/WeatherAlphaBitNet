@@ -197,3 +197,63 @@ WeatherAlphaBitNet/
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+---
+
+## Two-Phase Training Strategy
+
+### Phase 1: Fine-tune Aurora for station accuracy
+**Goal:** station-specialised weather model < 1°C MAE at 24hr lead time.
+
+[Microsoft Aurora](https://github.com/microsoft/aurora) is a ~250M parameter foundation model pre-trained on ERA5, GFS, ECMWF, air quality, and ocean data (Nature 2025). Rather than training from scratch, we fine-tune Aurora on station observation data from [StationBench](https://github.com/juaAI/stationbench) for our target stations:
+
+- KORD (Chicago O'Hare), KDFW (Dallas Fort Worth), KMIA (Miami)
+- KSEA (Seattle), KMDW (Chicago Midway), KDAL (Dallas Love Field)
+
+```bash
+python -m weatheralpha.aurora_finetune \
+  --stations configs/stations.json \
+  --station-data https://opendata.jua.ai/stationbench/meteostat_benchmark.zarr \
+  --epochs 10 --lr 1e-4 \
+  --output checkpoints/aurora-station-finetuned.pt
+```
+
+### Phase 2: Distill Aurora → WeatherAlphaBitNet
+**Goal:** compress Phase 1 Aurora into a BitNet b1.58 MoE student that runs on CPU.
+
+Knowledge distillation: WeatherAlphaBitNet (student) learns to match the fine-tuned Aurora (teacher) using KL divergence loss + station observation supervision:
+
+```
+L_total = α · L_KL(student, teacher) + (1-α) · L_MSE(student, observations)
+```
+
+The student inherits Aurora's world model with 10× fewer parameters and 1-bit weights.
+
+```bash
+python -m weatheralpha.distill \
+  --teacher checkpoints/aurora-station-finetuned.pt \
+  --arch-config configs/arch_config.json \
+  --station-data https://opendata.jua.ai/stationbench/meteostat_benchmark.zarr \
+  --alpha 0.7 \
+  --output checkpoints/weatheralpha-bitnet.pt
+```
+
+### Why this sequence
+- Phase 1 accuracy validates the station data pipeline and establishes a performance ceiling
+- Phase 2 distillation is more efficient than training from scratch (student learns from teacher, not raw data)
+- BitNet training-from-scratch on weather data would require months of GPU compute; distillation is weeks
+- The Phase 1 fine-tuned Aurora also serves as the production forecast model until Phase 2 matches its accuracy
+
+---
+
+## Autoresearch Integration
+
+The `autoresearch/arch_config.json` is the target file for nightly architecture search:
+
+```bash
+# Run overnight arch search via sxt-research
+python -m sxt_research run --project weatheralpha-moe --trials 20
+```
+
+Phase 1 loop: optimise Aurora fine-tuning hyperparams → metric = station MAE  
+Phase 2 loop: optimise student architecture (arch_config.json) → metric = teacher-student KL divergence + MAE delta
